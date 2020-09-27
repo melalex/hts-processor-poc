@@ -11,10 +11,25 @@ public @interface HtsMessage {
 
     byte key();
 
+    byte type();
+
     Delimiter delimiter() default Delimiter.FE_FE;
 
     enum Delimiter {
-        FE_FE,
-        FD_FD
+        FE_FE(new int[]{0xFE, 0xFE}),
+        FD_FD(new int[]{0xFD, 0xFED});
+
+        private final byte[] value;
+
+        Delimiter(int[] value) {
+            this.value = new byte[]{
+                    (byte) value[0],
+                    (byte) value[1]
+            };
+        }
+
+        public byte[] getValue() {
+            return value;
+        }
     }
 }
